@@ -6,7 +6,7 @@ function Splash(){
 
     return (
         <Container>
-            <br /><br /><br /><br />
+            <br /><br />
             <Row>
                 <Col>
                     <div className='center'>
