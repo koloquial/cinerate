@@ -1,112 +1,99 @@
-import { useEffect, useState } from 'react';
-import { searchMovieTitle } from '../functions/searchMovieTitle';
-import { Container, Row, Col } from 'react-bootstrap'
-import MovieCard from '../components/MovieCard';
-import { FaSearch } from "react-icons/fa";
-import { getMovieInfo } from '../functions/getMovieInfo';
-import CritMovieCard from '../components/CritMovieCard';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import io from 'socket.io-client'
+
+//components
+import Modal from '../components/Modal';
+
+//stages
+import Splash from '../stages/Splash';
+import AwaitPlayers from '../stages/AwaitPlayers';
+import AssignMovie from '../stages/AssignMovie';
+import CastVote from '../stages/CastVote';
+import AwaitGuesses from '../stages/AwaitGuesses';
+import RoundOver from '../stages/RoundOver';
+
+//socket
+const SOCKET_SERVER = process.env.REACT_APP_SOCKET_SERVER;
+const socket = io.connect(SOCKET_SERVER);
 
 function Game(){
-    const [movieTitleInput, setMovieTitleInput] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [movieID, setMovieID] = useState();
-    const [critMovie, setCritMovie] = useState();
-    const [castVote, setCastVote] = useState(0.0);
+    const [notification, setNotification] = useState('');
+    const [stage, setStage] = useState('splash');
+    const [room, setRoom] = useState([]);
+    const [entry, setEntry] = useState({id: '', name: '', score: ''});
 
-    function handleMovieTitleInput(event){
-      setMovieTitleInput(event.target.value);
-    }
-
-    function handleSearch(){
-        searchMovieTitle(movieTitleInput).then(res => setSearchResults(res.Search))
-    }
-
-    function handleMovieID(){
-        getMovieInfo(movieID).then(res => setCritMovie(res));
-    }
-
-    function handleCastVote(event){
-        setCastVote(event.target.value);
-    }
-
-    function cast(){
-
-    }
-
+    //socket listen
     useEffect(() => {
-        if(movieID){
-            handleMovieID();
-        }
-    }, [movieID])
+        socket.on("entry", (data) => {
+            setEntry(data);
+        })
 
+        socket.on("notification", (data) => {
+            setNotification(data.message);
+        })
+
+        socket.on("stage_update", (data) => {
+            setStage(data.stage);
+        })
+
+        socket.on("update_room", (data) => {
+            setRoom(data);
+        })
+    }, [socket])
+
+    //timeout notifications
     useEffect(() => {
-        console.log('crit movie', critMovie)
-    })
+        setTimeout(() => setNotification(''), 3000);
+    }, [notification])
+
 
     return (
-        <Container fluid>
-            <div className="center">
-                {!critMovie ?
-                <Row>
-                    <Col>
-                        <input type="text" placeholder="Movie Title" value={movieTitleInput} onChange={handleMovieTitleInput} />
-                        <button onClick={() => handleSearch()}><FaSearch /> Search</button>
-                    </Col>
-                </Row> : <></>}
+        <Container>
+            {stage === 'splash' ? 
+                <Splash socket={socket} entry={entry} /> 
+                : <></>}
+
+            {stage === 'await-players' ? 
+                <AwaitPlayers 
+                    socket={socket}
+                    entry={entry} 
+                    room={room} 
+                    setNotification={setNotification} 
+                /> 
+                : <></>}
+
+            {stage === 'assign-movie' ? 
+                <AssignMovie 
+                    socket={socket}
+                    entry={entry}
+                    room={room}
+                />
+                : <></>}
+            
+            {stage === 'cast-vote' ? 
+                <CastVote
+                    socket={socket}
+                    room={room}
+                />
+                : <></>}
+            
+            {stage === 'await-guesses' ?
+                <AwaitGuesses 
+                    socket={socket}
+                    entry={entry}
+                    room={room}
+                /> : <></>}
+
+            {stage === 'round-over' ? 
+                <RoundOver 
+                    socket={socket}
+                    room={room}
+                /> : <></>}
                 
-                <br />
-                {!movieID && searchResults ? 
-                <Container>
-                    <Row>
-                        {searchResults.map((movie, index) => {
-                            if(index === 0){
-                                console.log('movie', movie)
-                            }
-                            if(movie.imdbID){
-                                return (
-                                    <Col xs={6} sm={6} md={4} lg={2}>
-                                        <MovieCard 
-                                            key={index}
-                                            id={movie.imdbID}
-                                            title={movie.Title} 
-                                            year={movie.Year} 
-                                            img={movie.Poster}
-                                            setMovieID={setMovieID}
-                                        />
-                                    </Col>
-                                )
-                            }
-                        })}
-                        {console.log('search results', searchResults)}
-                        {!movieID && searchResults === undefined ? <p>No movies found.</p> : <></> }
-                    </Row>
-                </Container> : <></>}
-                {critMovie ? 
-                <Container>
-                        <CritMovieCard 
-                            title={critMovie.Title} 
-                            year={critMovie.Year} 
-                            img={critMovie.Poster}
-                            actors={critMovie.Actors}
-                            awards={critMovie.Awards}
-                            boxOffice={critMovie.BoxOffice}
-                            director={critMovie.Director}
-                            genre={critMovie.Genre}
-                            plot={critMovie.Plot}
-                            rated={critMovie.Rated}
-                            rating={critMovie.Rating}
-                            votes={critMovie.imdbVotes}
-                        /> 
-
-                        <br /><br />
-
-                        <h2>Rating: {castVote}</h2>
-                        <input type="range" min="0" max="10" step=".1" value={castVote} onChange={handleCastVote}></input>
-                        <br /><br />
-                        <button onClick={() => cast()}>Submit Rating</button>
-                        </Container>: <></>}
-            </div>
+            {notification ? <Modal note={notification} /> : <></>}
         </Container>
     )
 }
+
 export default Game;

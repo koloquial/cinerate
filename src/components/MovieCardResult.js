@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import noposter from '../images/no-poster.png'
 import { Container, Row, Col } from 'react-bootstrap'
 
-function CritMovieCard({ critMovie }) {
+function MovieCardResult({ critMovie }) {
   const [poster, setPoster] = useState('')
 
   function checkIfImageExists(url, callback) {
@@ -45,16 +45,8 @@ function CritMovieCard({ critMovie }) {
           <div className="movie-full-description">
             <h3>{critMovie.Title}</h3>
 
-            <p><i>{critMovie.Rated} | {critMovie.Year} <br />{critMovie.Genre}</i></p>
-
-            <h4>Director</h4>
-            <p>{critMovie.Director}</p>
-
-            <h4>Actors/Actresses</h4>
-            <p>{critMovie.Actors}</p>
-
-            <h4>Awards</h4>
-            <p>{critMovie.Awards}</p>
+            <h1>{critMovie.imdbRating}</h1>
+            <p>{critMovie.imdbVotes} Votes</p>
           </div>
         </Col>
       </Row>
@@ -62,4 +54,4 @@ function CritMovieCard({ critMovie }) {
   );
 }
 
-export default CritMovieCard;
+export default MovieCardResult;

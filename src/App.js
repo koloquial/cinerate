@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navigation from "./components/Navigation";
 
 //views
-import Splash from "./views/Splash";
-import Game from './views/Game';
+import Game from "./views/Game";
 
 function App() {
   return (
@@ -13,8 +12,7 @@ function App() {
        <Router>
          <Navigation />
          <Routes>
-            <Route exact path='/' element={<Splash />} />
-            <Route exact path='/game' element={<Game />} />
+            <Route exact path='/' element={<Game />} />
          </Routes>
        </Router>
     </div>
