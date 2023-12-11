@@ -8,6 +8,7 @@ function AwaitGuesses({ socket, entry, room }){
             <h3>Awaiting Guesses</h3>
             <br />
             <CritMovieCard critMovie={room.critMovie} />
+            <br />
             <ChatBox socket={socket} entry={entry} room={room} />
         </div>
     )

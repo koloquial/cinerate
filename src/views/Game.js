@@ -47,7 +47,6 @@ function Game(){
         setTimeout(() => setNotification(''), 3000);
     }, [notification])
 
-
     return (
         <Container>
             {stage === 'splash' ? 
@@ -75,6 +74,8 @@ function Game(){
                 <CastVote
                     socket={socket}
                     room={room}
+                    setStage={setStage}
+                    setNotification={setNotification}
                 />
                 : <></>}
             

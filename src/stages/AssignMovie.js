@@ -11,7 +11,7 @@ function AssignMovie({ socket, entry, room }){
     const [movieTitleInput, setMovieTitleInput] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [movieID, setMovieID] = useState(null);
-    const [time, setTime] = useState(60);
+    const [time, setTime] = useState(30);
 
     function handleMovieTitleInput(event){
         setMovieTitleInput(event.target.value);

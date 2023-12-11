@@ -5,14 +5,10 @@ function ChatBox({ socket, entry, room }){
     const [message, setMessage] = useState('');
 
     function sendMessage(){
-        //disable send button
-        document.getElementById("send-message-button").disabled = true;
         //send message to server
         socket.emit("send_message", {id: room.id, name: entry.name, message: message});
         //remove text from input
         setMessage('');
-        //enable button after 3 seconds
-        setTimeout(() => document.getElementById("send-message-button").disabled = false, 3000);
     }
 
     function handleMessage(event){
