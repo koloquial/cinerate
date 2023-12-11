@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import noposter from '../images/no-poster.png'
-import { Container, Row, Col } from 'react-bootstrap'
 
-function CritMovieCard({title, year, img, actors, awards, director, genre, rated }) {
+function MovieCardMin({img, title, rating, votes, guesses, players, winner}) {
     const [poster, setPoster] = useState('')
 
   function checkIfImageExists(url, callback) {
@@ -35,30 +35,39 @@ function CritMovieCard({title, year, img, actors, awards, director, genre, rated
   })
 
   return (
-    <Container>
+    <>
       <Row>
         <Col xs={6} sm={6} md={4}>
               <img src={poster} />
         </Col>
         <Col xs={6} sm={6} md={8}>
-          <div className="movie-full-description">
-            <h3>{title}</h3>
-
-            <p><i>{rated} | {year} <br />{genre}</i></p>
-
-            <h4>Director</h4>
-            <p>{director}</p>
-
-            <h4>Actors/Actresses</h4>
-            <p>{actors}</p>
-
-            <h4>Awards</h4>
-            <p>{awards}</p>
-          </div>
+            <h2>{title}</h2>
+            <br />
+            <h2>{rating}</h2>
+            <p>{votes} votes</p>
+            <br />
+            <h2>{winner.length > 1 ? `Winners` : `Winner`}</h2>
+            <p>{winner.map(win => {
+              return <p>{win.player.name}: {win.vote}</p>
+            })}</p>
         </Col>
       </Row>
-    </Container>
+      <Row>
+        <Col xs={6}>
+          <h4>Votes</h4>
+          {guesses.map(guess => {
+              return <p>{guess.player.name}: {guess.vote}</p>
+          })}
+        </Col>
+        <Col xs={6}>
+        <h4>Scores</h4>
+        {players.map(player => {
+            return <p>{player.name}: {player.score}</p>
+        })}
+        </Col>
+      </Row>
+      </>
   );
 }
 
-export default CritMovieCard;
+export default MovieCardMin;
