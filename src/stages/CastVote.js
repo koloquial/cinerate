@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import CritMovieCard from '../components/CritMovieCard';
 import { CiTimer } from "react-icons/ci";
+import { Card } from 'react-bootstrap';
 
 function CastVote({ socket, room, setStage, setNotification }){
     const [castVote, setCastVote] = useState(0.0);
-    const [time, setTime] = useState(20);
+    const [time, setTime] = useState(15);
 
     function handleCastVote(event){
         setCastVote(event.target.value);
@@ -26,20 +27,26 @@ function CastVote({ socket, room, setStage, setNotification }){
 
     return (
         <div className='center'>
-            <CritMovieCard critMovie={room.critMovie} />
-            <br />
-            <h2><CiTimer />{time}</h2>
-            <h2>Rating: {castVote}</h2>
-            <input 
-                type="range" 
-                min="0" 
-                max="10" 
-                step=".1" 
-                value={castVote} 
-                onChange={handleCastVote} 
-            />
-            <br /><br />
-            <button onClick={() => cast()}>Submit Rating</button>
+            <Card className='card-default'>
+                <h2 className='title2 centered'>{room.critMovie.Title}</h2>
+                <p className='centered small'><i>{room.critMovie.Year}</i></p>
+                <CritMovieCard critMovie={room.critMovie} />
+            </Card>
+            
+            <Card className='card-default'>
+                <h2 className='title2 centered'><CiTimer />{time}</h2>
+                <p><span className='key-val centered'>Rating:</span> {castVote}</p>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="10" 
+                    step=".1" 
+                    value={castVote} 
+                    onChange={handleCastVote} 
+                />
+                <br />
+                <button onClick={() => cast()}>Submit Rating</button>
+            </Card>
         </div>
     )
 }

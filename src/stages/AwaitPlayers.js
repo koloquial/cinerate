@@ -1,4 +1,4 @@
-import { Row, Col } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { LuClipboardCopy } from "react-icons/lu";
 import ChatBox from '../components/ChatBox';
 
@@ -20,36 +20,44 @@ function AwaitPlayers({ socket, entry, room, setNotification }){
     }
 
     function startGame(){
-        socket.emit("start_game", { id: room.id })
+        if(room.players.length == 1){
+            alert('You need more than 1 player to start game.')
+        }else{
+            socket.emit("start_game", { id: room.id })
+        }
     }
 
     return (
         <div className='center'>
-            <h3>Awaiting Players</h3>
+            <Card className='card-default'>
+                <h2 className='title2 centered'>Awaiting Players</h2>
 
-            {room.host.id === socket.id ? 
-                <button onClick={startGame}>Start</button> 
-                : <></>}
-            
-            <br /><br />
+                {room.host.id === socket.id ?
+                    <button onClick={startGame}>Start</button> 
+                    : <></>}
+                
+                <br />
 
-            <Row>
-                <Col>
-                    <h4>Room ID</h4>
+                <p className="key-val">Room ID</p>
 
-                    <input type="text" value={room.id} id="room-id" />
-                    <button onClick={copyToClipboard}><LuClipboardCopy /></button>
-                    <br /><br />
+                <input type="text" value={room.id} id="room-id" />
 
-                    <h4>Players</h4>
+                <button onClick={copyToClipboard}><LuClipboardCopy /></button>
+            </Card>
+
+            <Card className='card-default'>
+                <p className="key-val">Critics ({room.players.length})</p>
+                
+                <Row>
                     {room.players.map(player => {
-                        return <p>{player.name}</p>
+                        return <Col><p>{player.name}</p></Col>
                     })}
-                </Col>
-                <Col>
-                    <ChatBox socket={socket} entry={entry} room={room} />
-                </Col>
-            </Row>
+                </Row>
+            </Card>
+
+            <Card className='card-default'>
+                <ChatBox socket={socket} entry={entry} room={room} />
+            </Card>
         </div>
     )
 }

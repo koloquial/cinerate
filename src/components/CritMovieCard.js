@@ -40,20 +40,17 @@ function CritMovieCard({ critMovie }) {
               src={poster} 
               style={{maxWidth: '240px', maxHeight: '360px'}} 
             />
+            <p className='centered small'><i> {critMovie.Genre}</i></p>
         </Col>
         <Col xs={6} sm={6} md={8}>
           <div className="movie-full-description">
-            <h3>{critMovie.Title}</h3>
-
-            <p><i>{critMovie.Rated} | {critMovie.Year} <br />{critMovie.Genre}</i></p>
-
-            <h4>Director</h4>
+            <p className='key-val'>Director</p>
             <p>{critMovie.Director}</p>
 
-            <h4>Actors/Actresses</h4>
+            <p className='key-val'>Cast</p>
             <p>{critMovie.Actors}</p>
 
-            <h4>Awards</h4>
+            <p className='key-val'>Awards</p>
             <p>{critMovie.Awards}</p>
           </div>
         </Col>

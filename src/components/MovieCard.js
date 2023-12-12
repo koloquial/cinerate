@@ -35,7 +35,7 @@ function MovieCard({title, year, img, id, setMovieID}) {
   })
 
   return (
-    <Card onClick={() => setMovieID(title)}>
+    <Card className="search-card" onClick={() => setMovieID(title)}>
         <div className="movie-poster-container">
             <img src={poster} />
         </div>

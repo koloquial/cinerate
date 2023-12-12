@@ -15,6 +15,11 @@ function App() {
             <Route exact path='/' element={<Game />} />
          </Routes>
        </Router>
+       <div className='footer'>
+          <p className='subtext'>
+           Created by Nicholas R. Kolodziej | 2023
+          </p>
+       </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Row, Col, Card } from 'react-bootstrap';
 
 function Splash({ socket, entry }){
     const [joinRoom, setJoinRoom] = useState();
@@ -27,32 +28,54 @@ function Splash({ socket, entry }){
 
     return (
         <div className='center'>
-            <h2 className="title2">Film buff or bluff?</h2>
-            
-            <p>Predict how a movie faired amongst critics against your friends.</p>
+            <Card className='card-default'>
+                <h2 className="title2 centered">Film buff or bluff?</h2>
+                
+                <p>Think you can predict how well the public recieved a movie?</p>
 
-            <p><b>Name:</b> {entry.name}</p>
+                <ul style={{textAlign: 'left'}}>
+                    <li>
+                        <p>Compete against your friends and challenge your biases by ranking your favorite movies.</p>
+                    </li>
+                    <li>
+                        <p>The player with the closest rating to IMDB’s rating, without going over, gets a point.</p>
+                    </li>
+                    <li>
+                        <p>First to five points wins!</p>
+                    </li>
+                </ul>
+              
+                <p><span className="key-val">Name:</span> {entry.name}</p>
 
-            <input 
-                type="text" 
-                value={playerName} 
-                placeholder="Enter name" 
-                onChange={handlePlayerName} 
-            />
+                <Row>
+                    <Col>
+                        <input 
+                            type="text" 
+                            value={playerName} 
+                            placeholder="Enter name" 
+                            onChange={handlePlayerName} 
+                        />
+                        <button onClick={updatePlayerName}>Update Name</button>
+                    </Col>
+                </Row>
+            </Card>
 
-            <button onClick={updatePlayerName}>Submit</button>
-            <br /><br /><br /><br />
-
-            <button onClick={createRoom}>Create Room</button>
-            <br /><br /><br /><br />
-
-            <input 
-                type="text" 
-                placeholder="Enter Room Name" 
-                onChange={handleJoinRoom} 
-            />
-            <br />
-            <button onClick={sendJoinRoom}>Join Room</button>
+            <Card className="card-default">
+                <Row>
+                    <Col>
+                        <button onClick={createRoom}>Create Room</button>
+                    </Col>
+                    <Col>
+                        <input 
+                            type="text"
+                            value={joinRoom} 
+                            placeholder="Enter Room Name" 
+                            onChange={handleJoinRoom} 
+                        />
+                        <button onClick={sendJoinRoom}>Join Room</button>
+                    </Col>
+                </Row>
+            </Card>
         </div>
     )
 }

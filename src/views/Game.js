@@ -89,10 +89,12 @@ function Game(){
             {stage === 'round-over' ? 
                 <RoundOver 
                     socket={socket}
+                    entry={entry}
                     room={room}
                 /> : <></>}
                 
             {notification ? <Modal note={notification} /> : <></>}
+            
         </Container>
     )
 }

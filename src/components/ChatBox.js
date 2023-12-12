@@ -17,11 +17,11 @@ function ChatBox({ socket, entry, room }){
 
     return (
         <div>
-            <h4>Chat</h4>
+            <p className="key-val">Chat</p>
             <div className='chat-window'>
                 {room.chat.map(line => {
-                    return <p><b>{line.name}:</b> {line.message}</p>
-                    })}
+                    return <><span style={{color: 'white'}}>{line.name}:</span> <span style={{color: 'gray'}}>{line.message}</span><br /></>
+                })}
             </div>
             <br />
             <input 

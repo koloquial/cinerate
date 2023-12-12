@@ -1,0 +1,51 @@
+h1, h2, h3, h4, h5, p{
+    font-family: Roboto;
+    margin: 0;
+    margin-bottom: 10px !important;
+}
+
+p{
+    font-size: large;
+    color: var(--white);
+    text-shadow: 1px 1px 1px #000;
+}
+
+
+
+h2, h4{
+    color: var(--white2) !important;
+    text-shadow: 1px 1px 1px #000; 
+}
+
+ul{
+    color: var(--white);
+}
+
+.title1{
+    color: var(--primary);
+    font-family: Monoton;
+    font-size: xx-large;
+    letter-spacing: 3px;
+    color: var(--primary) !important;
+}
+  
+.title2{
+    color: var(--white2);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: xx-large;
+    letter-spacing: 3px;
+}
+
+.key-val{
+    display: inline-block !important;
+    color: var(--white2);
+}
+
+.centered{
+    text-align: center;
+}
+
+
+  
+
+  
