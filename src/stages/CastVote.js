@@ -5,7 +5,7 @@ import { Card } from 'react-bootstrap';
 
 function CastVote({ socket, room, setStage, setNotification }){
     const [castVote, setCastVote] = useState(0.0);
-    const [time, setTime] = useState(15);
+    const [time, setTime] = useState(30);
 
     function handleCastVote(event){
         setCastVote(event.target.value);

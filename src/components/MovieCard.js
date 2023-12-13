@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import noposter from '../images/no-poster.png'
 
-function MovieCard({title, year, img, id, setMovieID}) {
+function MovieCard({title, year, img, setMovieID}) {
     const [poster, setPoster] = useState('')
 
   function checkIfImageExists(url, callback) {

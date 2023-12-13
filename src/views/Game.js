@@ -1,4 +1,4 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client'
 
@@ -12,6 +12,8 @@ import AssignMovie from '../stages/AssignMovie';
 import CastVote from '../stages/CastVote';
 import AwaitGuesses from '../stages/AwaitGuesses';
 import RoundOver from '../stages/RoundOver';
+import AssignDealer from '../stages/AssignDealer';
+import GameOver from '../stages/GameOver';
 
 //socket
 const SOCKET_SERVER = process.env.REACT_APP_SOCKET_SERVER;
@@ -50,7 +52,11 @@ function Game(){
     return (
         <Container>
             {stage === 'splash' ? 
-                <Splash socket={socket} entry={entry} /> 
+                <Splash 
+                    socket={socket} 
+                    entry={entry} 
+                    setNotification={setNotification}
+                /> 
                 : <></>}
 
             {stage === 'await-players' ? 
@@ -66,6 +72,12 @@ function Game(){
                 <AssignMovie 
                     socket={socket}
                     entry={entry}
+                    room={room}
+                />
+                : <></>}
+            
+            {stage === 'assign-dealer' ? 
+                <AssignDealer 
                     room={room}
                 />
                 : <></>}
@@ -92,9 +104,15 @@ function Game(){
                     entry={entry}
                     room={room}
                 /> : <></>}
+
+            {stage === 'game-over' ? 
+                <GameOver 
+                    socket={socket}
+                    room={room}
+                /> : <></>}
                 
             {notification ? <Modal note={notification} /> : <></>}
-            
+        
         </Container>
     )
 }

@@ -6,39 +6,58 @@ import { FaSearch } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import ChatBox from '../components/ChatBox';
 import MovieCard from '../components/MovieCard';
+import Loading from '../components/Loading';
 
 function AssignMovie({ socket, entry, room }){
     const [movieTitleInput, setMovieTitleInput] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [movieID, setMovieID] = useState(null);
     const [time, setTime] = useState(30);
+    const [loading, setLoading] = useState(false);
 
     function handleMovieTitleInput(event){
         setMovieTitleInput(event.target.value);
     }
     
     function handleSearch(){
+        setLoading(true);
         searchMovieTitle(movieTitleInput)
         .then(res => setSearchResults(res.Search))
+        .then(() => setLoading(false));
     }
 
     function handleMovieID(){
         getMovieInfo(movieID)
-        .then(res => socket.emit("movie_selected", {room: room.id, movie: res}));
+        .then(res => socket.emit("movie_selected", {room: room.id, movie: res}))
+        .then(() => setLoading(false));
     }
 
     useEffect(() => {
         if(movieID){
             handleMovieID();
+            setLoading(true);
         }
     }, [movieID])
 
     useEffect(() => {
-        setTimeout(() => setTime(time - 1), 1000);
-        if(time === 0){
-            //forfeit turn
+        //count down clock if dealer
+        if(!loading && room.dealer.id === socket.id){
+            setTimeout(() => setTime(time - 1), 1000);
+            //forfeit turn if 30 seconds pass
+            if(time === 0){
+                socket.emit("assign_dealer", {room: room.id})
+            }
         }
     }, [time])
+
+    useEffect(() => {
+        socket.on("update_time", (data) => {
+            if(room.dealer.id === socket.id){
+                setTime(data);
+            }
+        })
+    }, [socket])
+
 
     return (
         <div className='center'>
@@ -59,7 +78,7 @@ function AssignMovie({ socket, entry, room }){
                             </div> : <></>}
                     </Card>
 
-                    {!movieID && searchResults ? 
+                    {!loading && !movieID && searchResults ? 
                         <Card className='card-default'>
                             <Row>
                                 {searchResults.map((movie, index) => {
@@ -80,7 +99,7 @@ function AssignMovie({ socket, entry, room }){
                                 })}
                                 {!movieID && searchResults === undefined ? <p>No movies found.</p> : <></> }
                             </Row>
-                        </Card> : <></>}
+                        </Card> : <Loading />}
                 </> : 
                 <>
                     <Card className='card-default'>

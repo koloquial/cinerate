@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
-function Splash({ socket, entry }){
+function Splash({ socket, entry, setNotification }){
     const [joinRoom, setJoinRoom] = useState();
     const [playerName, setPlayerName] = useState();
 
@@ -23,7 +23,13 @@ function Splash({ socket, entry }){
     }
 
     function sendJoinRoom(){
-        socket.emit("join_room", {id: socket.id, room: joinRoom})
+        //check if joinRoom is valid length
+        if(joinRoom.length !== 32){
+            setNotification('Invalid Room ID.');
+            setJoinRoom('');
+        }else{
+            socket.emit("join_room", {id: socket.id, room: joinRoom})
+        }
     }
 
     return (

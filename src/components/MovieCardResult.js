@@ -46,7 +46,9 @@ function MovieCardResult({ room }) {
             <h2 className='centered'>Rating: <span style={{color: 'gold'}}>{room.critMovie.imdbRating}</span></h2>
             <p className='centered'><span className='key-val'>Votes:</span> {room.critMovie.imdbVotes}</p>
             <br /><br />
-            <h2 className='title1 centered'>{room.winners.length > 1 ? 'Winners' : 'Winner'}</h2>
+            <h2 className='title1 centered'>{room.winners.length > 1 ? 'Winners' : ''}</h2>
+            <h2 className='title1 centered'>{room.winners.length === 1 ? 'Winner' : ''}</h2>
+            <h2 className='title1 centered'>{room.winners.length === 0 ? 'Push' : ''}</h2>
                 {room.winners[0] !== null ?
                 <>
                     {room.winners.map(winner => {
@@ -61,7 +63,7 @@ function MovieCardResult({ room }) {
                             </>
                         )
                     })}
-                </> : <p>No winner.</p>}
+                </> : <p className='centered'>No winner.</p>}
           </div>
         </Col>
       </Row>

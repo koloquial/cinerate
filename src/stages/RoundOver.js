@@ -5,7 +5,8 @@ import { CiTimer } from "react-icons/ci";
 import ChatBox from "../components/ChatBox";
 
 function RoundOver({ socket, entry, room }){
-    const [time, setTime] = useState(10);
+    const [time, setTime] = useState(20);
+    const [gameOver, setGameOver] = useState(false);
 
     useEffect(() => {
         setTimeout(() => setTime(time - 1), 1000);
@@ -18,13 +19,31 @@ function RoundOver({ socket, entry, room }){
     }, [time])
 
     function nextRound(){
-        socket.emit("next_round", {room: room.id});
+        if(gameOver){
+            socket.emit("game_over", {room: room.id});
+        }else{
+            socket.emit("next_round", {room: room.id});
+        }
     }
+
+    useEffect(() => {
+        const winners = [];
+        room.players.forEach(player => {
+            if(player.score === 5){
+                winners.push(player);
+            }
+        })
+        if(winners.length > 0){
+            setGameOver(true);
+        }
+    })
 
     return (
         <div className='center'>
             <Card className='card-default'>
-            <h2 className='title2 centered'>Next Round: <CiTimer />{time}</h2>
+                <h2 className='title2 centered'>
+                    {!gameOver ? <>Next Round: <CiTimer />${time}</> : <>Final Round Complete</>}
+                </h2>
                 <MovieCardResult room={room}/>  
             </Card>
             <Card className='card-default'>
