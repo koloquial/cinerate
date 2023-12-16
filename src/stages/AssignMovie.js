@@ -41,6 +41,7 @@ function AssignMovie({ socket, entry, room }){
 
     useEffect(() => {
         //count down clock if dealer
+        console.log('called', loading, room.dealer.id, socket.id)
         if(!loading && room.dealer.id === socket.id){
             setTimeout(() => setTime(time - 1), 1000);
             //forfeit turn if 30 seconds pass
@@ -52,10 +53,8 @@ function AssignMovie({ socket, entry, room }){
 
     useEffect(() => {
         socket.on("update_time", (data) => {
-            if(room.dealer.id === socket.id){
-                setTime(data);
-            }
-        })
+            setTime(data);
+        });
     }, [socket])
 
 

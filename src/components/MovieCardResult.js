@@ -23,17 +23,20 @@ function MovieCardResult({ room }) {
   }
 
   useEffect(() => {
-    checkIfImageExists(room.critMovie.Poster, (exists) => {
-      if (exists) {
-        setPoster(room.critMovie.Poster)
-      } else {
-        setPoster(noposter)
-      }
-    });
+    if(room.critMovie){
+      checkIfImageExists(room.critMovie.Poster, (exists) => {
+        if (exists) {
+          setPoster(room.critMovie.Poster)
+        } else {
+          setPoster(noposter)
+        }
+      });
+    }
   }, [])
 
   return (
     <Container>
+      {room.critMovie ?
       <Row>
         <Col xs={6} sm={6} md={4}>
             <img 
@@ -66,7 +69,7 @@ function MovieCardResult({ room }) {
                 </> : <p className='centered'>No winner.</p>}
           </div>
         </Col>
-      </Row>
+      </Row> : <></>}
     </Container>
   );
 }

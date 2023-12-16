@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
+
 function GameOver({ room }){
     
     function getWinners(){
@@ -15,10 +17,11 @@ function GameOver({ room }){
         <div className="">
             <Card className='card-default'>
                 <h2 className="title1 centered">Winner</h2>
+                <br />
                 {getWinners().map(player => {
-                    return <p>{player.name}</p>
+                    return <p className='title2 centered'>{player.name}</p>
                 })}
-
+                <br /><br />
                 <button>Return to home</button>
             </Card>
         </div>
