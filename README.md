@@ -4,8 +4,12 @@ Guess movie ratings with friends.
 
 ### Technology
 
-- react
-- socket.io-client
+- ReactJS
+- Socket.io-client
+- OMDb api
 - react-bootstrap
 - react-icons
-- OMDb api
+
+### Server
+
+https://github.com/koloquial/cinerate-server
